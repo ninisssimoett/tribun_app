@@ -17,7 +17,7 @@ class NewsArticles {
       urlToImage: json['urlToImage'],
       publishedAt: json['publishedAt'],
       content: json['content'],
-      source: json['source'] != null ? Source.fromJson(json['source']) : null //blm beres oi
+      source: json['source'] != null ? Source.fromJson(json['source']) : null 
     );
   }
 
