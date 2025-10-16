@@ -25,6 +25,12 @@ class CategoryChip extends StatelessWidget {
           color: isSelected ? AppColors.primary : AppColors.textSecondary,
           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
         ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            color: isSelected ? AppColors.primary : Colors.transparent,
+          )
+        ),
 
       ),
 
