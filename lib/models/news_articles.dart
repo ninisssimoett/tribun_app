@@ -1,3 +1,4 @@
+// pemanggilan properti yang ada pada database
 class NewsArticles {
   final String? title;
   final String? description;
