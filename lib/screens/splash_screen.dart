@@ -10,42 +10,33 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> 
- with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
 
-  @override 
+  @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
       duration: Duration(seconds: 2),
-      vsync: this
+      vsync: this,
     );
 
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
 
-    _scaleAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.elasticInOut,
-    ));
+    _scaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.elasticInOut),
+    );
 
     _animationController.forward();
 
     // navigate to home screen after 3 second
-    Future.delayed(Duration(seconds: 3), () {
-       Get.offAllNamed(Routes.HOME);
-     
+    Future.delayed(Duration(seconds: 5), () {
+      Get.offAllNamed(Routes.ONBOARDING);
     });
   }
 
@@ -54,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen>
     _animationController.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,49 +61,17 @@ class _SplashScreenState extends State<SplashScreen>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 120,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.2), // biar hitamnya ga terlalu pekat -> shadow
-                            blurRadius: 20,
-                            offset: Offset(0, 10)
-                          )
-                        ]
-                      ),
-                      child: Icon(
-                        Icons.newspaper,
-                        size: 60,
-                        color: AppColors.primary,
-                      ),
-                      
+                    Image.asset(
+                      'assets/images/logo.png',
+                      width: 250, // gedein biar dominan
+                      height: 250,
+                      fit: BoxFit.contain,
                     ),
                     SizedBox(height: 30),
-                    Text(
-                      'News App',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        letterSpacing: 1.5,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Stay Updated With Latest News',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white.withValues(alpha: 0.8),
-                      ),
-                    ),
-                    SizedBox(height: 50),
+
                     CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    )
+                    ),
                   ],
                 ),
               ),

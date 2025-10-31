@@ -1,9 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:tribun_app/models/news_articles.dart';
 import 'package:tribun_app/utils/app_colors.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class NewsCard extends StatelessWidget {
   final NewsArticles article;
@@ -13,106 +11,93 @@ class NewsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.only(bottom: 16),
-      elevation: 2,
-      shadowColor: AppColors.cardShadow,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: InkWell(
-        // membungkus widget yg ada agar menyatu dgn animasinya
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1B325B), // biru tua background
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // image
-            if (article.urlToImage != null)
-              ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-                child: CachedNetworkImage(
-                  imageUrl: article.urlToImage!,
-                  height: 200,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => Container(
-                    height: 200,
-                    color: AppColors.divider,
-                    child: Center(child: CircularProgressIndicator()),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    height: 200,
-                    color: AppColors.divider,
-                    child: Center(
-                      child: Icon(
-                        Icons.image_not_supported,
-                        size: 40,
-                        color: AppColors.textHint,
-                      ),
-                    ),
-                  ),
-                ),
+            // Placeholder gambar kecil di kiri
+            Container(
+              height: 48,
+              width: 48,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
               ),
-            Padding(
-              padding: EdgeInsets.all(16),
+              child: article.urlToImage != null
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        article.urlToImage!,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : const Icon(
+                      Icons.image,
+                      color: Colors.white54,
+                      size: 24,
+                    ),
+            ),
+            const SizedBox(width: 12),
+
+            // Text content
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // source news and date
+                  // Label atas: kategori dan durasi baca
                   Row(
                     children: [
-                      if (article.source?.name != null) ...[
-                        Expanded(
-                          child: Text(
-                            article.source!.name!,
-                            style: TextStyle(
-                              color: AppColors.primary,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                      ],
-                      // timestamp
-                      if (article.publishedAt != null)
                       Text(
-                        timeago.format(DateTime.parse(article.publishedAt!)),
+                        article.source?.name ?? 'News',
                         style: TextStyle(
-                          color: AppColors.textSecondary,
+                          color: Colors.white70,
                           fontSize: 12,
                         ),
-                      )
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        "• 12 min reads",
+                        style: TextStyle(
+                          color: Colors.white38,
+                          fontSize: 12,
+                        ),
+                      ),
                     ],
                   ),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 6),
 
-                  // title
-                  if (article.title != null)
+                  // Judul
                   Text(
-                    article.title!,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
+                    article.title ?? '',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
                       height: 1.3,
-                    ),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: 8),
-                  // description
-                  if (article.description != null)
-                  Text(
-                    article.description!,
-                    style: TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 14,
-                      height: 1.4,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
+                  const SizedBox(height: 6),
+
+                  // Timestamp
+                  if (article.publishedAt != null)
+                    Text(
+                      timeago.format(DateTime.parse(article.publishedAt!)),
+                      style: const TextStyle(
+                        color: Colors.white38,
+                        fontSize: 12,
+                      ),
+                    ),
                 ],
               ),
             ),
